@@ -42,7 +42,7 @@ module Backup
         end
 
         def upload(filename, remote_path, opts={})
-          pp filename, remote_path, opts
+          mkdir_p(remote_path)
           basename = File.basename(filename)
           target_path = File.expand_path(basename, remote_path)
           keys = calc_digests(filename)
@@ -79,6 +79,32 @@ module Backup
         end
 
         private
+        def edit_time(time = nil)
+          time ||= Time.now
+          (time.to_i * 1000 * 1000 * 10).to_s
+        end
+        
+        def mkdir_p(path)
+          return if path == "/"
+          mkdir_p(File.expand_path("..", path))
+          make_remote_path(path, :ignore_conflict => true)
+        end
+
+        def make_remote_path(path, opts = {})
+          data = {
+            :path => path,
+            :editTime => edit_time
+          }
+          response = access_token.post(fs(:mkdir), data.to_json, {'Content-Type' => 'text/plain'})
+          case response.code
+          when "200"
+            #
+          when "409"
+            unless opts[:ignore_conflict]
+              raise "directory already exist: `#{path}'"
+            end
+          end
+        end
         def http_request url, data = nil, options = {}
           begin
             options[:method] = :post unless options[:method]

@@ -1,4 +1,4 @@
-1. auto create dir
+1. auto create dir (DONE)
 2. the "/home" should not exist
 3. support delete
 4. consumer key and secret should be optional
