@@ -1,0 +1,14 @@
+PATH
+  remote: .
+  specs:
+    backup2everbox (0.0.1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  backup2everbox!
