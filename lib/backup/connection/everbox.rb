@@ -25,7 +25,7 @@ module Backup
         end
 
         def authorize!
-          response = @consumer.request(:post, "/oauth/quick_token?login=#{CGI.escape @authorizing_user}&password=#{CGI.escape @authorizing_password}")
+          response = @consumer.request(:post, "/oauth/quick_token?provider=sdo&login=#{CGI.escape @authorizing_user}&password=#{CGI.escape @authorizing_password}")
           if response.code.to_i != 200
             raise "login failed: #{response.body}"
           end

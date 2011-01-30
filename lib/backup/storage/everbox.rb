@@ -4,8 +4,8 @@ module Backup
   module Storage
     class Everbox < Base
       def initialize(adapter)
-        dropbox = Backup::Connection::Everbox.new(adapter)
-        dropbox.store
+        everbox = Backup::Connection::Everbox.new(adapter)
+        everbox.store
       end
     end
   end
