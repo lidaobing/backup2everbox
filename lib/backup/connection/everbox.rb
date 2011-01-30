@@ -77,6 +77,18 @@ module Backup
         end
 
         def delete(remote_path, opts={})
+          remote_path = find_real_remote_path(remote_path)
+          data = {
+            :paths => [remote_path],
+          }
+          response = access_token.post(fs(:delete), data.to_json, {'Content-Type' => 'text/plain'})
+          case response.code
+          when "200"
+            true
+          else
+            nil
+            #raise "delete failed: #{response}"
+          end
         end
 
         private
