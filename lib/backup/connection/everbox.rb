@@ -42,6 +42,7 @@ module Backup
         end
 
         def upload(filename, remote_path, opts={})
+          remote_path = find_real_remote_path(remote_path)
           mkdir_p(remote_path)
           basename = File.basename(filename)
           target_path = File.expand_path(basename, remote_path)
@@ -79,6 +80,14 @@ module Backup
         end
 
         private
+        def find_real_remote_path(path)
+          if path.start_with?('/')
+            "/home" + path
+          else
+            "/home/" + path
+          end
+        end
+
         def edit_time(time = nil)
           time ||= Time.now
           (time.to_i * 1000 * 1000 * 10).to_s
