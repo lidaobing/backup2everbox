@@ -1,6 +1,6 @@
 1. auto create dir (DONE)
 2. the "/home" should not exist (DONE)
 3. support delete (DONE)
-4. consumer key and secret should be optional
+4. consumer key and secret should be optional (DONE)
 5. bigdaddy said SDO Account should be the default
 6. don't try create dir if dir already exist

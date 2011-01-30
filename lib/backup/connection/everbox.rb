@@ -12,14 +12,16 @@ module Backup
 
       class Session
         DEFAULT_OPTIONS = {
+          :api_key => 'GW4YtvBpPwHfY0rCSf2xeOqn7tT0YH2O4zftXCOM',
+          :secret_access_key => 'xlKLpZLVSe0Gk6q4w05PsDpzjEbV8SyE71exgz1i',
           :oauth_site => 'http://account.everbox.com',
           :fs_site => 'http://fs.everbox.com',
           :chunk_size => 1024*1024*4
         }
         attr_accessor :authorizing_user, :authorizing_password, :access_token
-        def initialize(apikey, secret, opts={})
-          @consumer = OAuth::Consumer.new apikey, secret, :site => 'http://account.everbox.com'
+        def initialize(opts={})
           @options = DEFAULT_OPTIONS.merge(opts || {})
+          @consumer = OAuth::Consumer.new @options[:api_key], @options[:secret_access_key], :site => 'http://account.everbox.com'
         end
 
         def authorize!
@@ -196,7 +198,10 @@ module Backup
       end
 
       def session
-        @session ||= Session.new(api_key, secret_access_key)
+        opts = {}
+        opts[:api_key] = api_key unless api_key.nil?
+        opts[:secret_access_key] = secret_access_key unless secret_access_key.nil?
+        @session ||= Session.new(opts)
         unless @session.authorized?
           @session.authorizing_user = username
           @session.authorizing_password = password
