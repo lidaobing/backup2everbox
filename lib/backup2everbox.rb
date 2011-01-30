@@ -27,6 +27,7 @@ module Backup
         res
       end
       alias_method_chain :storage_class, :everbox
+      alias_method_chain :record_class, :everbox
     end
   end
 end
