@@ -14,10 +14,17 @@
 gem 'backup2everbox'
 require 'backup2everbox'
 
-backup 'archive-backup-everbox' do
+backup 'mysql-backup-everbox' do
   
-  adapter :archive do
-    files ["/path/to/dir/need/backup"]
+  adapter :mysql do
+    user  'USERNAME'
+    password 'PASSWORD'
+    database 'DBNAME'
+    skip_tables ['django_session']
+    options do
+      host '127.0.0.1'
+      port '3306'
+    end
   end
   
   storage :everbox do
@@ -33,7 +40,7 @@ backup 'archive-backup-everbox' do
 end
 # ----8<----------
 
-5. 运行 sudo backup -r archive-backup-everbox
+5. 运行 sudo backup -r mysql-backup-everbox
 
 6. backup 支持备份目录，数据库等多种源，具体可以参考 backup 的文档: 
    https://github.com/meskyanichi/backup
