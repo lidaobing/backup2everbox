@@ -3,7 +3,6 @@ require 'cgi'
 require 'oauth'
 require 'json'
 require 'rest_client'
-require 'pp'
 
 
 module Backup
@@ -56,12 +55,10 @@ module Backup
             :fileSize  => File.open(filename).stat.size,
             :base      => ''
           }
-          pp params
           info = JSON.parse(access_token.post(fs(:prepare_put), JSON.dump(params), {'Content-Type' => 'text/plain' }).body)
-          pp info
           File.open(filename) do |f|
             info["required"].each do |x|
-              puts "upload block ##{x["index"]}"
+              puts "uploading block ##{x["index"]}"
               f.seek(x["index"] * @options[:chunk_size])
               code, response = http_request x['url'], f.read(@options[:chunk_size]), :method => :put
               if code != 200
@@ -73,9 +70,7 @@ module Backup
 
           ftime = (Time.now.to_i * 1000 * 1000 * 10).to_s
           params = params.merge :editTime => ftime, :mimeType => 'application/octet-stream'
-          pp access_token
           code, response = access_token.post(fs(:commit_put), params.to_json, {'Content-Type' => 'text/plain'})
-          pp code, response
         end
 
         def delete(remote_path, opts={})
