@@ -42,9 +42,26 @@ module Backup
           !!@access_token
         end
 
+        def path_stat(real_remote_path)
+          response = access_token.post(fs(:get), JSON.dump({:path => real_remote_path}), {'Content-Type' => 'text/plain'})
+          return :not_exist if response.code.to_i == 404
+          info = JSON.parse(response.body)
+          return :not_exist if info["type"] & 0x8000 != 0
+          return :file if info["type"] & 0x1 != 0
+          return :dir if info["type"] & 0x2 != 0
+          raise "unknown type: #{info["type"]}"
+        end
+
         def upload(filename, remote_path, opts={})
           remote_path = find_real_remote_path(remote_path)
-          mkdir_p(remote_path)
+          stat = path_stat(remote_path)
+          if stat == :not_exist
+            puts "remote dir not exist, try to create it"
+            mkdir_p(remote_path)
+          elsif stat == :file
+            raise "remote path is a file, failed to backup"
+          end
+          
           basename = File.basename(filename)
           target_path = File.expand_path(basename, remote_path)
           keys = calc_digests(filename)

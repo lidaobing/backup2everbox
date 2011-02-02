@@ -1,6 +1,7 @@
 === 0.0.2 / XXXX-XX-XX
 * clean log
 * support "rake rdoc"
+* don't try to create dir if dir already exist
 
 === 0.0.1 / 2011-01-30
 * it works
