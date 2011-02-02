@@ -1,4 +1,4 @@
-=== 0.0.2 / XXXX-XX-XX
+=== 0.0.2 / 2011-02-02
 * clean log
 * support "rake rdoc"
 * don't try to create dir if dir already exist
