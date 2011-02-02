@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["LI Daobing"]
   s.email       = ["lidaobing@gmail.com"]
-  s.homepage    = "http://rubygems.org/gems/backup2everbox"
+  s.homepage    = "https://github.com/lidaobing/backup2everbox"
   s.summary     = %q{backup to EverBox}
   s.description = %q{backup to EverBox}
 
