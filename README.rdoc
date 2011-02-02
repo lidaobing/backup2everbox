@@ -2,6 +2,8 @@
 
 备份你的数据、文件到 EverBox
 
+文档: http://rubydoc.info/github/lidaobing/backup2everbox/master/frames
+
 = 使用方法
 
 1. 注册一个 EverBox 帐号: http://www.everbox.com/ , 注意必须注册盛大通行证帐号,
