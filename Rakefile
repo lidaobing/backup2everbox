@@ -10,3 +10,5 @@ RDoc::Task.new do |rd|
   rd.rdoc_files.include("README.rdoc", "History.rdoc", "lib/**/*.rb")
   rd.options << "--charset" << "UTF-8"
 end
+
+task :default => :rdoc
