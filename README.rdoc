@@ -1,5 +1,7 @@
 = 简介
 
+{<img src="https://secure.travis-ci.org/lidaobing/backup2everbox.png?branch=master" alt="Build Status" />}[http://travis-ci.org/lidaobing/backup2everbox]
+
 备份你的数据、文件到 EverBox
 
 文档: http://rubydoc.info/github/lidaobing/backup2everbox/master/frames
