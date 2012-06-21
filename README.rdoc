@@ -15,13 +15,27 @@
 
 3. 运行 sudo backup --setup
 
-4. 修改 /opt/backup/config/backup.rb, 改为如下的形式
+4. 运行 backup2everbox, 得到认证码，输出如下所示
+
+    open url in your browser: http://account.everbox.com/...
+    please input the verification code: 123456
+    add following code to your /opt/backup/config/backup.rb
+    ##################################################
+    storage :everbox do
+      access_key_id     '1234567890abcdefgh'
+      secret_access_key 'hgfedcba0987654321'
+      path              '/backups'
+    end
+    ##################################################
+
+
+5. 修改 /opt/backup/config/backup.rb, 改为如下的形式
 
     gem 'backup2everbox'
     require 'backup2everbox'
-    
+
     backup 'mysql-backup-everbox' do
-      
+
       adapter :mysql do
         user  'USERNAME'
         password 'PASSWORD'
@@ -32,22 +46,20 @@
           port '3306'
         end
       end
-      
+
       storage :everbox do
-        username          'YOUR SDO USERNAME'
-        password          'YOUR SDO PASSWORD'
+        access_key_id     '1234567890abcdefgh'
+        secret_access_key 'hgfedcba0987654321'
         path              '/backups'
       end
-    
+
       keep_backups 10
       encrypt_with_password false
       notify false
-      
+
     end
 
-5. 运行 sudo backup -r mysql-backup-everbox
+6. 运行 sudo backup -r mysql-backup-everbox
 
-6. backup 支持备份目录，数据库等多种源，并且支持非对称密钥加密来保护数据安全，
-   具体可以参考 backup 的文档: https://github.com/meskyanichi/backup
-
-
+7. backup 支持备份目录，数据库等多种源，并且支持非对称密钥加密来保护数据安全，
+   具体可以参考 backup 的文档: https://github.com/meskyanichi/backup/tree/backup-2

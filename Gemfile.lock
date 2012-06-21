@@ -7,6 +7,7 @@ PATH
       launchy
       oauth
       rest-client
+      sqlite3
 
 GEM
   remote: http://rubygems.org/
@@ -96,4 +97,3 @@ DEPENDENCIES
   bundler (>= 1.0.0)
   rake (= 0.8.7)
   rdoc
-  sqlite3
