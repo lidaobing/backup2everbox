@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "backup2everbox/cli"
+
+Backup2everbox::CLI.execute(STDOUT, STDIN, STDERR, ARGV)
