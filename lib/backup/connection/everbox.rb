@@ -11,31 +11,21 @@ module Backup
 
       class Session
         DEFAULT_OPTIONS = {
-          :api_key => 'GW4YtvBpPwHfY0rCSf2xeOqn7tT0YH2O4zftXCOM',
-          :secret_access_key => 'xlKLpZLVSe0Gk6q4w05PsDpzjEbV8SyE71exgz1i',
+          :consumer_key => 'GW4YtvBpPwHfY0rCSf2xeOqn7tT0YH2O4zftXCOM',
+          :consumer_secret => 'xlKLpZLVSe0Gk6q4w05PsDpzjEbV8SyE71exgz1i',
           :oauth_site => 'http://account.everbox.com',
           :fs_site => 'http://fs.everbox.com',
           :chunk_size => 1024*1024*4
         }
-        attr_accessor :authorizing_user, :authorizing_password, :access_token
+        attr_accessor :authorizing_token, :authorizing_secret, :access_token
         def initialize(opts={})
           @options = DEFAULT_OPTIONS.merge(opts || {})
-          @consumer = OAuth::Consumer.new @options[:api_key], @options[:secret_access_key], :site => 'http://account.everbox.com'
+          @consumer = OAuth::Consumer.new @options[:consumer_key], @options[:consumer_secret], :site => 'http://account.everbox.com'
         end
 
         def authorize!
-          response = @consumer.request(:post, "/oauth/quick_token?provider=sdo&login=#{CGI.escape @authorizing_user}&password=#{CGI.escape @authorizing_password}")
-          if response.code.to_i != 200
-            raise "login failed: #{response.body}"
-          end
-
-          d = CGI.parse(response.body).inject({}) do |h,(k,v)|
-            h[k.strip.to_sym] = v.first
-            h[k.strip]        = v.first
-            h
-          end
-
-          @access_token = OAuth::AccessToken.from_hash(@consumer, d)
+          @access_token = OAuth::AccessToken.from_hash(@consumer, {:oauth_token => authorizing_token, :oauth_token_secret => authorizing_secret})
+          puts @access_token.inspect
         end
 
         def authorized?
@@ -61,7 +51,7 @@ module Backup
           elsif stat == :file
             raise "remote path is a file, failed to backup"
           end
-          
+
           basename = File.basename(filename)
           target_path = File.expand_path(basename, remote_path)
           keys = calc_digests(filename)
@@ -118,7 +108,7 @@ module Backup
           time ||= Time.now
           (time.to_i * 1000 * 1000 * 10).to_s
         end
-        
+
         def mkdir_p(path)
           return if path == "/"
           mkdir_p(File.expand_path("..", path))
@@ -187,11 +177,11 @@ module Backup
               res << urlsafe_base64(Digest::SHA1.digest(data))
             end
           end
-          res 
+          res
         end
       end
 
-      attr_accessor :adapter, :procedure, :final_file, :tmp_path, :api_key, :secret_access_key, :username, :password, :path
+      attr_accessor :adapter, :procedure, :final_file, :tmp_path, :api_key, :secret_access_key, :access_key_id, :path
 
       def initialize(adapter=false)
         if adapter
@@ -215,8 +205,8 @@ module Backup
         opts[:secret_access_key] = secret_access_key unless secret_access_key.nil?
         @session ||= Session.new(opts)
         unless @session.authorized?
-          @session.authorizing_user = username
-          @session.authorizing_password = password
+          @session.authorizing_token = access_key_id
+          @session.authorizing_secret = secret_access_key
           @session.authorize!
         end
 
@@ -239,7 +229,7 @@ module Backup
       private
 
       def load_storage_configuration_attributes(static=false)
-        %w(api_key secret_access_key username password path).each do |attribute|
+        %w(access_key_id secret_access_key path).each do |attribute|
           if static
             send("#{attribute}=", procedure.get_storage_configuration.attributes[attribute])
           else

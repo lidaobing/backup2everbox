@@ -4,13 +4,10 @@ require 'launchy'
 module Backup2everbox
   class CLI
     DEFAULT_OPTIONS = {
-      :pwd => '/home',
-      :config_file => '~/.everbox_client/config',
       :consumer_key => 'GW4YtvBpPwHfY0rCSf2xeOqn7tT0YH2O4zftXCOM',
       :consumer_secret => 'xlKLpZLVSe0Gk6q4w05PsDpzjEbV8SyE71exgz1i',
       :oauth_site => 'http://account.everbox.com',
       :fs_site => 'http://fs.everbox.com',
-      :chunk_size => 1024*1024*4,
       :proxy => nil
     }
 
