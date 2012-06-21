@@ -29,8 +29,14 @@ module Backup2everbox
       STDOUT.flush
       verification_code = STDIN.readline.strip
       access_token = request_token.get_access_token :oauth_verifier => verification_code
-      puts "token: #{access_token.token}"
-      puts "secret: #{access_token.secret}"
+      puts "add following code to your /opt/backup/config/backup.rb"
+      puts "#" * 50
+      puts "storage :everbox do"
+      puts "  access_key_id     '#{access_token.token}'"
+      puts "  secret_access_key '#{access_token.secret}'"
+      puts "  path              '/backups'"
+      puts "end"
+      puts "#" * 50
     end
 
     private
