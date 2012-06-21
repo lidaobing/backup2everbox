@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
                     '--charset' << 'UTF-8'
   s.extra_rdoc_files = ['README.rdoc', 'History.rdoc']
 
-  s.add_dependency 'backup'
+  s.add_dependency 'backup', '~> 2.0'
   s.add_dependency 'activesupport'
   s.add_dependency 'oauth'
   s.add_dependency 'rest-client'
