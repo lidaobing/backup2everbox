@@ -17,12 +17,11 @@ Gem::Specification.new do |s|
                     '--charset' << 'UTF-8'
   s.extra_rdoc_files = ['README.rdoc', 'History.rdoc']
 
-  s.add_dependency 'backup', '~> 2.0'
+  s.add_dependency 'backup', '~> 3.0'
   s.add_dependency 'activesupport'
   s.add_dependency 'oauth'
   s.add_dependency 'rest-client'
   s.add_dependency 'launchy'
-  s.add_dependency 'sqlite3'
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_development_dependency 'rake', "0.8.7"
   s.add_development_dependency 'rdoc'
