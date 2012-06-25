@@ -25,6 +25,8 @@ module Backup
 
         def authorize!
           @access_token = OAuth::AccessToken.from_hash(@consumer, {:oauth_token => authorizing_token, :oauth_token_secret => authorizing_secret})
+          raise "@access_token.token is nil" if @access_token.token.nil?
+          raise "@access_token.secret is nil" if @access_token.secret.nil?
           puts @access_token.inspect
         end
 
@@ -43,6 +45,7 @@ module Backup
         end
 
         def upload(filename, remote_path, opts={})
+          raise TypeError, "filename should be string, but #{filename.class}" unless filename.is_a?(String)
           remote_path = find_real_remote_path(remote_path)
           stat = path_stat(remote_path)
           if stat == :not_exist
@@ -63,6 +66,7 @@ module Backup
             :base      => ''
           }
           info = JSON.parse(access_token.post(fs(:prepare_put), JSON.dump(params), {'Content-Type' => 'text/plain' }).body)
+          raise "prepare_put failed:\n#{info}" unless info["required"].is_a?(Array)
           File.open(filename) do |f|
             info["required"].each do |x|
               puts "uploading block ##{x["index"]}"
@@ -181,17 +185,11 @@ module Backup
         end
       end
 
-      attr_accessor :adapter, :procedure, :final_file, :tmp_path, :api_key, :secret_access_key, :access_key_id, :path
+      attr_accessor :token, :secret
 
-      def initialize(adapter=false)
-        if adapter
-          self.adapter            = adapter
-          self.procedure          = adapter.procedure
-          self.final_file         = adapter.final_file
-          self.tmp_path           = adapter.tmp_path.gsub('\ ', ' ')
-
-          load_storage_configuration_attributes
-        end
+      def initialize(token, secret)
+        @token = token
+        @secret = secret
       end
 
       def static_initialize(procedure)
@@ -201,12 +199,12 @@ module Backup
 
       def session
         opts = {}
-        opts[:api_key] = api_key unless api_key.nil?
-        opts[:secret_access_key] = secret_access_key unless secret_access_key.nil?
+        opts[:api_key] = token unless token.nil?
+        opts[:secret_access_key] = secret unless secret.nil?
         @session ||= Session.new(opts)
         unless @session.authorized?
-          @session.authorizing_token = access_key_id
-          @session.authorizing_secret = secret_access_key
+          @session.authorizing_token = token
+          @session.authorizing_secret = secret
           @session.authorize!
         end
 
