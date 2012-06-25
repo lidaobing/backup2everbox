@@ -1,3 +1,6 @@
+=== 0.1.0 / 2012-06-25
+* support backup ~> 3.0
+
 === 0.0.3 / 2012-06-22
 * only working with backup-2
 * old everbox auth method no longer works
