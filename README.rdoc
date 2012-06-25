@@ -15,52 +15,46 @@
 
 3. 运行 backup generate:config
 
-4. 运行 backup generate:model --trigger=mysql-backup-everbox
+4. 运行 backup generate:model --trigger=mysql_backup_everbox
 
 5. 运行 backup2everbox, 得到认证码，输出如下所示
 
     open url in your browser: http://account.everbox.com/...
     please input the verification code: 123456
-    add following code to your /opt/backup/config/backup.rb
+
+    add following code to your ~/Backup/models/foo.rb
     ##################################################
-    storage :everbox do
-      access_key_id     '1234567890abcdefgh'
-      secret_access_key 'hgfedcba0987654321'
-      path              '/backups'
-    end
+      store_with Everbox do |eb|
+        eb.token     = '1234567890abcdefgh'
+        eb.secret    = 'hgfedcba0987654321'
+      end
     ##################################################
 
 6. 修改 ~/Backup/models/mysql_backup_everbox.rb, 改为如下的形式
 
+    require 'rubygems'
     gem 'backup2everbox'
     require 'backup2everbox'
 
-    backup 'mysql-backup-everbox' do
+    Backup::Model.new(:mysql_backup_everbox, 'Description for mysql_backup_everbox') do
+      split_into_chunks_of 250
 
-      adapter :mysql do
-        user  'USERNAME'
-        password 'PASSWORD'
-        database 'DBNAME'
-        skip_tables ['django_session']
-        options do
-          host '127.0.0.1'
-          port '3306'
-        end
+      database MySQL do |db|
+        db.name               = "giga_development"
+        db.username           = "my_username"
+        db.password           = "my_password"
+        db.host               = "localhost"
+        db.port               = 3306
+        db.socket             = "/tmp/mysql.sock"
       end
 
-      storage :everbox do
-        access_key_id     '1234567890abcdefgh'
-        secret_access_key 'hgfedcba0987654321'
-        path              '/backups'
+      store_with Everbox do |eb|
+        eb.token     = '1234567890abcdefgh'
+        eb.secret    = 'hgfedcba0987654321'
       end
-
-      keep_backups 10
-      encrypt_with_password false
-      notify false
-
     end
 
-6. 运行 sudo backup -r mysql-backup-everbox
+6. 运行 sudo backup perform -t mysql_backup_everbox
 
 7. backup 支持备份目录，数据库等多种源，并且支持非对称密钥加密来保护数据安全，
-   具体可以参考 backup 的文档: https://github.com/meskyanichi/backup/tree/backup-2
+   具体可以参考 backup 的文档: https://github.com/meskyanichi/backup
