@@ -23,9 +23,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'rest-client'
   s.add_dependency 'launchy'
   s.add_development_dependency "bundler", ">= 1.0.0"
-  s.add_development_dependency 'rake', "0.8.7"
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc'
-  if RUBY_ENGINE == 'ruby' and RUBY_VERSION > '1.9.1'
+  if (!defined?(RUBY_ENGINE) or RUBY_ENGINE == 'ruby') and RUBY_VERSION > '1.9.1'
     s.add_development_dependency 'debugger'
   end
 

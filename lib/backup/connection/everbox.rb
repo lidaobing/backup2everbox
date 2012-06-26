@@ -4,6 +4,7 @@ require 'oauth'
 require 'json'
 require 'rest_client'
 
+require 'backup/logger'
 
 module Backup
   module Connection
@@ -27,7 +28,6 @@ module Backup
           @access_token = OAuth::AccessToken.from_hash(@consumer, {:oauth_token => authorizing_token, :oauth_token_secret => authorizing_secret})
           raise "@access_token.token is nil" if @access_token.token.nil?
           raise "@access_token.secret is nil" if @access_token.secret.nil?
-          puts @access_token.inspect
         end
 
         def authorized?
@@ -49,7 +49,7 @@ module Backup
           remote_path = find_real_remote_path(remote_path)
           stat = path_stat(remote_path)
           if stat == :not_exist
-            puts "remote dir not exist, try to create it"
+            Logger.message "remote dir not exist, try to create it"
             mkdir_p(remote_path)
           elsif stat == :file
             raise "remote path is a file, failed to backup"
@@ -69,7 +69,7 @@ module Backup
           raise "prepare_put failed:\n#{info}" unless info["required"].is_a?(Array)
           File.open(filename) do |f|
             info["required"].each do |x|
-              puts "uploading block ##{x["index"]}"
+              Logger.message "uploading block ##{x["index"]}"
               f.seek(x["index"] * @options[:chunk_size])
               code, response = http_request x['url'], f.read(@options[:chunk_size]), :method => :put
               if code != 200
@@ -143,7 +143,7 @@ module Backup
             when :post
               response = RestClient.post url, data, :content_type => options[:content_type]
             when :put
-              response = RestClient.put url, data
+              response = RestClient.put url, data, :user_agent => user_agent
             end
             body = response.body
             data = nil
@@ -165,11 +165,13 @@ module Backup
             [code, data]
           end
         end
+
         def fs(path)
           path = path.to_s
           path = '/' + path unless path.start_with? '/'
           @options[:fs_site] + path
         end
+
         def urlsafe_base64(content)
           Base64.encode64(content).strip.gsub('+', '-').gsub('/','_')
         end
@@ -182,6 +184,10 @@ module Backup
             end
           end
           res
+        end
+
+        def user_agent
+          "backup2everbox #{Backup2everbox::VERSION}"
         end
       end
 
