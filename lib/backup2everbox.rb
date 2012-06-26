@@ -7,7 +7,4 @@ module Backup
   module Storage
     autoload :Everbox, 'backup/storage/everbox'
   end
-  module Record
-    autoload :Everbox, 'backup/record/everbox'
-  end
 end

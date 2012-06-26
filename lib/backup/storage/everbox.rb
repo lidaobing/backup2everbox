@@ -1,5 +1,4 @@
 require 'backup/connection/everbox'
-require 'debugger'
 
 module Backup
   module Storage
