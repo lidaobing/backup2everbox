@@ -1,3 +1,4 @@
+require 'backup2everbox/version'
 require 'backup/config/everbox'
 
 module Backup
