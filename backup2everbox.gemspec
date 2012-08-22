@@ -13,9 +13,8 @@ Gem::Specification.new do |s|
   s.description = %q{backup to EverBox}
 
   s.rubyforge_project = "backup2everbox"
-  s.rdoc_options << '--main' << 'README.md' <<
-                    '--charset' << 'UTF-8'
-  s.extra_rdoc_files = ['README.md', 'History.rdoc']
+  s.rdoc_options << '--charset' << 'UTF-8'
+  s.extra_rdoc_files = ['History.rdoc']
 
   s.add_dependency 'backup', '~> 3.0'
   s.add_dependency 'activesupport'
