@@ -18,39 +18,44 @@
 
 5. 运行 `backup2everbox`, 得到认证码，输出如下所示
 
-      open url in your browser: http://account.everbox.com/...
-      please input the verification code: 123456
+  ```
+  open url in your browser: http://account.everbox.com/...
+  please input the verification code: 123456
 
-      add following code to your ~/Backup/models/foo.rb
-      ##################################################
-        store_with Everbox do |eb|
-          eb.token     = '1234567890abcdefgh'
-        end
-      ##################################################
+  add following code to your ~/Backup/models/foo.rb
+  ##################################################
+    store_with Everbox do |eb|
+      eb.token     = '1234567890abcdefgh'
+      eb.secret    = 'hgfedcba0987654321'
+    end
+  ##################################################
+  ```
 
 6. 修改 `~/Backup/models/mysql_backup_everbox.rb`, 改为如下的形式
 
-      require 'rubygems'
-      gem 'backup2everbox'
-      require 'backup2everbox'
+  ```ruby
+  require 'rubygems'
+  gem 'backup2everbox'
+  require 'backup2everbox'
 
-      Backup::Model.new(:mysql_backup_everbox, 'Description for mysql_backup_everbox') do
-        split_into_chunks_of 250
+  Backup::Model.new(:mysql_backup_everbox, 'Description for mysql_backup_everbox') do
+    split_into_chunks_of 250
 
-        database MySQL do |db|
-          db.name               = "giga_development"
-          db.username           = "my_username"
-          db.password           = "my_password"
-          db.host               = "localhost"
-          db.port               = 3306
-          db.socket             = "/tmp/mysql.sock"
-        end
+    database MySQL do |db|
+      db.name               = "giga_development"
+      db.username           = "my_username"
+      db.password           = "my_password"
+      db.host               = "localhost"
+      db.port               = 3306
+      db.socket             = "/tmp/mysql.sock"
+    end
 
-        store_with Everbox do |eb|
-          eb.token     = '1234567890abcdefgh'
-          eb.secret    = 'hgfedcba0987654321'
-        end
-      end
+    store_with Everbox do |eb|
+      eb.token     = '1234567890abcdefgh'
+      eb.secret    = 'hgfedcba0987654321'
+    end
+  end
+  ```
 
 7. 运行 `backup perform -t mysql_backup_everbox`
 
