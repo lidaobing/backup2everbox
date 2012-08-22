@@ -1,3 +1,7 @@
+=== 0.1.2 / 2012-08-22
+* fix crash.
+* change README to markdown.
+
 === 0.1.1 / 2012-06-26
 * don't include debugger in code
 
