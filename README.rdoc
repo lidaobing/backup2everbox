@@ -8,16 +8,15 @@
 
 = 使用方法
 
-1. 注册一个 EverBox 帐号: http://www.everbox.com/ , 注意必须注册盛大通行证帐号,
-   如果需要邀请码，请到 http://www.douban.com/group/topic/17242955/
+1. 注册一个 EverBox 帐号: http://www.everbox.com
 
-2. 运行 gem install backup2everbox
+2. 运行 `gem install backup2everbox`
 
-3. 运行 backup generate:config
+3. 运行 `backup generate:config`
 
-4. 运行 backup generate:model --trigger=mysql_backup_everbox
+4. 运行 `backup generate:model --trigger=mysql_backup_everbox`
 
-5. 运行 backup2everbox, 得到认证码，输出如下所示
+5. 运行 `backup2everbox`, 得到认证码，输出如下所示
 
     open url in your browser: http://account.everbox.com/...
     please input the verification code: 123456
@@ -30,7 +29,7 @@
       end
     ##################################################
 
-6. 修改 ~/Backup/models/mysql_backup_everbox.rb, 改为如下的形式
+6. 修改 `~/Backup/models/mysql_backup_everbox.rb`, 改为如下的形式
 
     require 'rubygems'
     gem 'backup2everbox'
