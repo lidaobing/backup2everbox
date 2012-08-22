@@ -4,6 +4,7 @@ require 'oauth'
 require 'json'
 require 'rest_client'
 
+require 'backup2everbox'
 require 'backup/logger'
 
 module Backup
