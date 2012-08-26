@@ -95,8 +95,7 @@ module Backup
           when "200"
             true
           else
-            nil
-            #raise "delete failed: #{response}"
+            raise "delete failed: #{response}"
           end
         end
 

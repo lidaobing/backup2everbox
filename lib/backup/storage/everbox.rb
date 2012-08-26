@@ -15,10 +15,15 @@ module Backup
         instance_eval(&block) if block_given?
       end
 
+      def remove!(pkg)
+        remote_path = remote_path_for(pkg)
+        Logger.message "#{storage_name} started removing " +
+              "'#{ remote_path }'."
+        connection.session.delete(remote_path)
+      end
+
       def transfer!
         remote_path = remote_path_for(@package)
-
-        connection = Backup::Connection::Everbox.new(token, secret)
 
         files_to_transfer_for(@package) do |local_file, remote_file|
           Logger.message "#{storage_name} started transferring " +
@@ -38,6 +43,10 @@ module Backup
         end
       end
 
+      private
+      def connection
+        @connection ||= Backup::Connection::Everbox.new(token, secret)
+      end
     end
   end
 end

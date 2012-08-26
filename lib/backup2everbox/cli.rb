@@ -33,6 +33,7 @@ module Backup2everbox
       puts "add following code to your ~/Backup/models/foo.rb"
       puts "#" * 50
       puts "  store_with Everbox do |eb|"
+      puts "    eb.keep      = 7"
       puts "    eb.token     = '#{access_token.token}'"
       puts "    eb.secret    = '#{access_token.secret}'"
       puts "  end"

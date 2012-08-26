@@ -25,6 +25,7 @@
   add following code to your ~/Backup/models/foo.rb
   ##################################################
     store_with Everbox do |eb|
+      eb.keep      = 7
       eb.token     = '1234567890abcdefgh'
       eb.secret    = 'hgfedcba0987654321'
     end
@@ -51,6 +52,7 @@
     end
 
     store_with Everbox do |eb|
+      eb.keep      = 7
       eb.token     = '1234567890abcdefgh'
       eb.secret    = 'hgfedcba0987654321'
     end
