@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    backup2everbox (0.1.3)
+    backup2everbox (0.2.0)
       activesupport
       backup (~> 3.0)
       launchy
