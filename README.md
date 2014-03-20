@@ -63,3 +63,7 @@
 
 8. backup 支持备份目录，数据库等多种源，并且支持非对称密钥加密来保护数据安全，
    具体可以参考 backup 的文档: https://github.com/meskyanichi/backup
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lidaobing/backup2everbox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
